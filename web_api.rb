@@ -18,8 +18,7 @@ new_characters = characters.map do |value|
         id: value["url"].sub("https://swapi.co/api/people/", "").sub("/", "")
     }
 end
-
-puts new_characters
+create_file(new_characters,)
 
 new_films = films.map do |value|
     {
@@ -32,8 +31,6 @@ new_films = films.map do |value|
     }
 end
 
-puts new_films
-
 new_planets = planets.map do |value|
     {
         name: value["name"],
@@ -42,4 +39,3 @@ new_planets = planets.map do |value|
     }
 end
 
-puts new_planets
