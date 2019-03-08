@@ -6,19 +6,15 @@ films = get_data("https://swapi.co/api/films/")
 
 planets =  get_data("https://swapi.co/api/planets/")
 
-puts "Number of characters: #{characters.length}"
-puts "Number of films: #{films.length}"
-puts "Number of plantes: #{planets.length}"
 names = []
 new_characters = characters.map do |value|
     {
         name: value["name"],
-        films: value["films"],
+        films: value["films"].sort,
         gender: value["gender"],
-        id: value["url"].sub("https://swapi.co/api/people/", "").sub("/", "")
+        id: value["url"]
     }
 end
-create_file(new_characters,)
 
 new_films = films.map do |value|
     {
@@ -26,16 +22,18 @@ new_films = films.map do |value|
         title: value["title"],
         director: value["director"],
         release: value["release_date"],
-        characters: value["characters"],
-        id: value["url"].sub("https://swapi.co/api/people/", "").sub("/", "")
+        characters: value["characters"].sort,
+        id: value["url"]
     }
 end
 
 new_planets = planets.map do |value|
     {
         name: value["name"],
-        residents: value["residents"],
-        id: value["url"].sub("https://swapi.co/api/people/", "").sub("/", "")
+        residents: value["residents"].sort,
+        id: value["url"]
     }
 end
 
+# headers_characters = ["name", "films", "gender", "url"]
+# create_file(new_characters.map{ |val| val.values }, headers_characters, "characters")
