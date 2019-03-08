@@ -31,6 +31,6 @@ end
 def create_file(input, headers, filename)
   CSV.open(filename + ".csv",'wb') do |data|
     data << headers
-    input.each{ |val| data << val}
+    input.each{ |val| data << val.values}
   end
 end
