@@ -5,6 +5,7 @@ require "csv"
 $index_general = 0
 $uri = "https://www.cnet.com/es/noticias/ranking-peliculas-star-wars-guerra-de-las-galaxias/"
 $response = ""
+
 def initialization_scrapping
   $response = HTTP.get($uri).body.to_s
   text_references = "Ránking de las películas de 'Star Wars' según CNET en Español"
