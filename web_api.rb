@@ -7,11 +7,7 @@ films = get_data("https://swapi.co/api/films/")
 
 planets =  get_data("https://swapi.co/api/planets/")
 
-# new
 species = get_data("https://swapi.co/api/species/")
-
-# Gather required information from data
-names = []
 
 # characters
 #
@@ -86,15 +82,12 @@ character_final = characters_modified.map do |value|
                   index = films_modified.index { |film| film[:id] == film_id }
                   "Episode " + films_modified[index][:episode_id].to_s + ": " + films_modified[index][:title]
               end
-  
+# catching character specie
   index_species = species_modified.index { |specie| specie[:id] == value[:species][0] }
   
-  # puts value[:species]
-  # puts index_species
-  # puts species_modified[index_species][:name]
-
+# delivering data
   value[:films] = new_value.sort.join("|")
-  value[:species] = index_species != nil ? species_modified[index_species][:name] : "Sin especie"
+  value[:species] = index_species != nil ? species_modified[index_species][:name] : "Without specie"
   value
 end
 
@@ -105,17 +98,17 @@ end
 films_final = films_modified.map do |value|
   character_film = value[:characters]
   new_value=[]
-
+# catch characters names in planet
   new_value[0] = character_film.map do |character_id|
     index = characters_modified.index { |character| character[:id] == character_id }
     characters_modified[index][:name]
   end
-
+# catching characters genders in planet
   new_value[1] = character_film.map do |character_id|
     index = characters_modified.index { |character| character[:id] == character_id }
     characters_modified[index][:gender]
   end
-
+# delivering data
   value[:characters] = new_value[0].sort.join("|")
   value[:gender_count] = new_value[1].group_by {|e| e}.map{|k, v| "#{k} - #{v.length}"}.join("|")
   value
@@ -127,28 +120,25 @@ end
 # residents : array
 # id        : integer
 #
-# Attach all the 
 planets_final = planets_modified.map do |value|
   character_planet = value[:residents]
   new_value = []
-  # capturando nombre personaje
+  # catching character name
   new_value[0] = character_planet.map do |character_id|
     index = characters_modified.index { |character| character[:id] == character_id }
     characters_modified[index][:name]
   end
-# capturando especie personaje
-  new_value[1] = character_planet.map do |character_species|
-    index = characters_modified.index { |character| character[:species] == character_species }
-    index != nil ? characters_modified[index][:species] : "Sin especie"
+  # catching character specie
+  new_value[1] = character_planet.map do |character_id|
+    index = characters_modified.index { |character| character[:id] == character_id }
+    characters_modified[index][:species] != nil ? characters_modified[index][:species] : "Without specie"
   end
-
+# delivering requested data
   value[:residents] = new_value[0].sort.join("|")
   value[:species_count] = new_value[1].group_by {|e| e}.map{|k, v| "#{k} - #{v.length}"}.join("|")
   value
 end
 
-#puts character_final[0]
-
-create_file(character_final,["name_character","films","gender","id"],"personajes")
-create_file(films_final, ["episode","film_title", "director", "release", "characters_name", "fil_id", "gender_distribution" ], "peliculas")
-create_file(planets_final, ["planet_name", "residents", "planet_id"], "planetas")
+create_file(character_final,["character_name","character_films","character_gender","character_id"],"personajes")
+create_file(films_final, ["film_number","film_title", "film_director", "film_release_date", "film_characters", "film_id", "film_gender_distrib" ], "peliculas")
+create_file(planets_final, ["planet_name", "planet_residents", "planet_id", "planet_species_distrib"], "planetas")
